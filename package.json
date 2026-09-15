@@ -47,6 +47,7 @@
     "./cosmoz-empty-state": "./dist/cosmoz-empty-state.js"
   },
   "dependencies": {
+    "@neovici/cosmoz-tokens": "^3.5.2",
     "@pionjs/pion": "^2.5.2",
     "lit-html": "^3.3.1"
   },
