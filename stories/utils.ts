@@ -3,6 +3,8 @@ import './buttons.css';
 
 export const searchIcon = () =>
 	html` <div
+		slot="header"
+		role="img"
 		style="border-radius: var(--cz-radius-md);
     border: 1px solid var(--cz-color-border-secondary);
     height: calc(var(--cz-spacing) * 12);
@@ -32,6 +34,8 @@ export const searchIcon = () =>
 
 export const fileIcon = () =>
 	html` <svg
+		slot="header"
+		role="img"
 		width="40"
 		height="40"
 		fill="none"

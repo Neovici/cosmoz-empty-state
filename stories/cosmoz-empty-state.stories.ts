@@ -1,6 +1,8 @@
 import { html } from '@pionjs/pion';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { when } from 'lit-html/directives/when.js';
+import { within } from 'shadow-dom-testing-library';
+import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-empty-state';
 import { fileIcon, getButtons, searchIcon } from './utils';
 
@@ -58,12 +60,43 @@ export default meta;
 export const Default: StoryObj<Args> = {
 	render: (args) =>
 		html`<cosmoz-empty-state>
-			${when(
-				args.header,
-				() => html` <div slot="header">${getHeaderContent(args.header)}</div> `,
-			)}
+			${when(args.header, () => getHeaderContent(args.header))}
 			<h1 slot="title">${args.title}</h1>
 			<p>${args.description}</p>
 			${when(args.buttons, () => getButtons(args.buttons))}
 		</cosmoz-empty-state>`,
+
+	play: async ({ canvasElement, step }) => {
+		const canvas = within(canvasElement);
+
+		await step('Assigns header content to the header slot', async () => {
+			const header = canvas.getByShadowRole('img');
+			await waitFor(() =>
+				expect(header.assignedSlot).toHaveAttribute('name', 'header'),
+			);
+		});
+
+		await step('Assigns title content to the title slot', async () => {
+			const title = canvas.getByShadowRole('heading');
+			await waitFor(() =>
+				expect(title.assignedSlot).toHaveAttribute('name', 'title'),
+			);
+		});
+
+		await step('Assigns children to the default slot', async () => {
+			const description = canvas.getByShadowRole('paragraph');
+			await waitFor(() =>
+				expect(description.assignedSlot).toHaveProperty('name', ''),
+			);
+		});
+
+		await step('Assigns button content to the buttons slot', async () => {
+			const buttons = canvas.getAllByShadowRole('button');
+			for (const button of buttons) {
+				await waitFor(() =>
+					expect(button.assignedSlot).toHaveAttribute('name', 'buttons'),
+				);
+			}
+		});
+	},
 };
