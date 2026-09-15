@@ -23,9 +23,9 @@ const styles = css`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: calc(var(--cz-spacing) * 8);
+		gap: var(--cosmoz-empty-state-gap, calc(var(--cz-spacing) * 8));
 		width: 100%;
-		max-width: 32rem;
+		max-width: var(--cosmoz-empty-state-max-width, 32rem);
 		margin-inline: auto;
 	}
 
