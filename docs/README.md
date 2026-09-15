@@ -1,85 +1,97 @@
 # cosmoz-empty-state
 
-Neovici empty-state web component using pionjs and lit-html.
+A customizable empty-state web component for displaying a heading, description, illustration, and actions when there is no content to show.
+
+Part of the [Neovici](https://neovici.se) design system.
 
 ## Installation
 
 ```bash
-npm install
+npm install @neovici/cosmoz-empty-state
 ```
 
-## Available Scripts
-
-- `npm run lint` - Run ESLint and TypeScript type checking
-- `npm run build` - Build TypeScript to dist/
-- `npm run test` - Run all tests (unit + storybook)
-- `npm run test:unit` - Run unit tests only (fast, jsdom)
-- `npm run test:storybook` - Run storybook interaction tests only (browser)
-- `npm run test:watch` - Run tests in watch mode
-- `npm run storybook:start` - Start Storybook development server
-- `npm run storybook:build` - Build static Storybook
-
 ## Usage
-
-Import the component:
 
 ```javascript
 import '@neovici/cosmoz-empty-state';
 ```
 
-Use in HTML:
-
 ```html
-<cosmoz-empty-state>No items yet.</cosmoz-empty-state>
+<cosmoz-empty-state>
+	<svg slot="header" class="icon">...</svg>
+	<h1 slot="title">No results found</h1>
+	<p>Your search did not match any projects. Please try again.</p>
+	<button slot="buttons">Clear filters</button>
+	<button slot="buttons">Create new project</button>
+</cosmoz-empty-state>
 ```
+
+## Slots
+
+Content is configured through slots. The component has no custom properties, attributes, or events in its JavaScript API.
+
+| Slot      | Description                                            |
+| --------- | ------------------------------------------------------ |
+| `header`  | Icon or illustration displayed above the text.         |
+| `title`   | Heading for the empty state.                           |
+| (default) | Description or supporting content below the heading.   |
+| `buttons` | Action buttons displayed in a centered horizontal row. |
+
+## Styling
+
+### CSS Custom Properties
+
+| Property                         | Default                       | Description                                 |
+| -------------------------------- | ----------------------------- | ------------------------------------------- |
+| `--cosmoz-empty-state-gap`       | `calc(var(--cz-spacing) * 8)` | Space between the header, main, and footer. |
+| `--cosmoz-empty-state-max-width` | `32rem`                       | Maximum width of the component.             |
+
+```css
+cosmoz-empty-state {
+	--cosmoz-empty-state-gap: 1.5rem;
+	--cosmoz-empty-state-max-width: 40rem;
+}
+```
+
+### CSS Parts
+
+| Part      | Description                                  |
+| --------- | -------------------------------------------- |
+| `header`  | Container for the icon or illustration.      |
+| `main`    | Container for the title and default content. |
+| `title`   | Container for the heading.                   |
+| `footer`  | Container for the actions area.              |
+| `buttons` | Flex container for the action buttons.       |
+
+```css
+cosmoz-empty-state::part(buttons) {
+	flex-wrap: wrap;
+}
+```
+
+## Design Tokens
+
+This component uses CSS custom properties from `@neovici/cosmoz-tokens` for spacing, typography, and text colors. Customize these tokens at the application level to match your theme.
 
 ## Development
 
-1. Clone the repository
-2. Run `npm install`
-3. Start development with `npm run storybook:start`
-4. Make changes and verify with tests
+```bash
+# Install dependencies
+npm install
 
-## Testing
+# Start Storybook
+npm run storybook:start
 
-This project uses Vitest with two test projects:
+# Run lint and type checks
+npm run lint
 
-### Unit Tests (`test:unit`)
+# Run tests
+npm run test
 
-Fast tests that run in jsdom. Use for testing:
-
-- Utility functions
-- Pure logic
-- Data transformations
-
-**Note**: Unit tests cannot import Pion/Lit components or use `renderHook` from `@neovici/testing` due to ESM resolution issues in jsdom. For testing hooks and components, use Storybook interaction tests instead.
-
-### Storybook Tests (`test:storybook`)
-
-Browser-based tests using Playwright. Use for testing:
-
-- Component rendering
-- User interactions
-- Visual behavior
-
-Tests are written as `play` functions in story files.
-
-### Important: Imports in Story Files
-
-**Never import from `'vitest'` in story files:**
-
-```typescript
-import { expect } from 'vitest'; // Crashes deployed Storybook
+# Build
+npm run build
 ```
 
-**Use `'storybook/test'` instead:**
+## License
 
-```typescript
-import { expect } from 'storybook/test'; // Works everywhere
-```
-
-Vitest's `expect` requires an active test context and crashes when stories run in the deployed Storybook UI.
-
-## Publishing
-
-This package uses Changesets for automated versioning and publishing. Add a changeset with `npm run changeset`, then open a release PR to publish.
+Apache-2.0
